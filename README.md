@@ -43,5 +43,5 @@ complete this coding challenge. Refer to the documentation links below for more 
 
 ```
 ▶ node -v
-v12.15.0
+v16.13.1
 ```
