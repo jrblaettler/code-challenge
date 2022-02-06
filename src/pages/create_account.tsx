@@ -65,6 +65,7 @@ export default function CreateAccount() {
           <h1>Create New Account</h1>
           <label htmlFor='username'>Username</label>
           <input
+            className={styles.input}
             name='username'
             type='text'
             placeholder='username'
@@ -76,6 +77,7 @@ export default function CreateAccount() {
           ) : null}
           <label htmlFor='password'>Password</label>
           <input
+            className={styles.input}
             name='password'
             type='password'
             placeholder='password'
@@ -96,7 +98,9 @@ export default function CreateAccount() {
               <li>contain at least one number(0-9)</li>
             </ul>
           ) : null}
-          <button>Create Account</button>
+          <button className={styles.button} type='submit'>
+            Create Account
+          </button>
         </form>
       </article>
     </>
