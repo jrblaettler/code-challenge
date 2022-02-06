@@ -19,6 +19,7 @@ export default function createNewAccount(
   const passwordParams = new RegExp(
     '^(?=.{20,50})(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
   );
+
   if (
     !newUser.username.match(userParams) &&
     !newUser.password.match(passwordParams)
