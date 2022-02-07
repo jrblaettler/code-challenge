@@ -14,11 +14,16 @@ describe('CreateAccount', () => {
 
   test('rendering', () => {
     render(<CreateAccount />);
+
+    const body = {
+      username: '',
+      password: '',
+    };
     fetchMock.mockResponseOnce(JSON.stringify({}));
     userEvent.click(screen.getByText('Create Account'));
     expect(fetchMock).toBeCalledTimes(1);
     expect(fetchMock).toBeCalledWith('/api/create_new_account', {
-      body: '{}',
+      body: JSON.stringify(body),
       method: 'POST',
     });
   });

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { FormEvent, ChangeEvent, useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 import Image from 'next/image';
-import logo from '../assets/logo.png';
+// import logo from '../assets/logo.png';
 
 export default function CreateAccount() {
   const [username, setUsername] = useState('');
@@ -14,8 +14,6 @@ export default function CreateAccount() {
   async function handleSubmit(evt: FormEvent) {
     evt.preventDefault();
     try {
-      const passwordCracked = await checkPasswordCracked(password);
-      setIsPasswordCracked(passwordCracked);
       const response = await fetch('/api/create_new_account', {
         method: 'POST',
         body: JSON.stringify({
@@ -26,9 +24,18 @@ export default function CreateAccount() {
       const resBody = await response.json();
       if (resBody.errors?.username === 'fail') {
         setIsUsernameError(true);
+      } else {
+        setIsUsernameError(false);
       }
       if (resBody.errors?.password === 'fail') {
         setIsPasswordError(true);
+      } else {
+        setIsPasswordError(false);
+      }
+      if (resBody.errors?.password === 'cracked') {
+        setIsPasswordCracked(true);
+        setIsUsernameError(false);
+        setIsPasswordError(false);
       }
       if (resBody.result === true) {
         console.log('Account Created');
@@ -43,17 +50,6 @@ export default function CreateAccount() {
       setPassword('');
     }
   }
-
-  const checkPasswordCracked = async (password: string) => {
-    const response = await fetch('/api/password_exposed', {
-      method: 'POST',
-      body: JSON.stringify({
-        password,
-      }),
-    });
-    const resBody = await response.json();
-    return resBody.result;
-  };
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.name === 'username') {
@@ -75,7 +71,7 @@ export default function CreateAccount() {
       </Head>
       <article className={styles.article}>
         <form className={styles.form} onSubmit={handleSubmit}>
-          <Image src={logo} width={75} height={65} />
+          {/* <Image src={logo} width={75} height={65} /> */}
           <h1 className={styles.title}>Create New Account</h1>
           <div className={styles.input_container}>
             <label className={styles.label} htmlFor='username'>
