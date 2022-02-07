@@ -21,7 +21,7 @@ export default async function createNewAccount(
     const passwordParams = new RegExp(
       '^(?=.{20,50}$)(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
     );
-    const passwordCracked = await checkPasswordCracked(true, newUser.password);
+    const passwordCracked = await checkPasswordCracked(newUser.password);
 
     if (
       !newUser.username.match(userParams) &&

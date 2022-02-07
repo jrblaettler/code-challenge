@@ -21,10 +21,13 @@ describe('CreateAccount', () => {
     fetchMock.mockResponseOnce(JSON.stringify({}));
     userEvent.click(screen.getByText('Create Account'));
     expect(fetchMock).toBeCalledTimes(1);
-    expect(fetchMock).toBeCalledWith('/api/password_exposed', {
-      body: JSON.stringify(body),
-      method: 'POST',
-    });
+    expect(fetchMock).toBeCalledWith(
+      'http://localhost:3000/api/password_exposed',
+      {
+        body: JSON.stringify(body),
+        method: 'POST',
+      }
+    );
   });
 
   test('renders validation warnings', async () => {

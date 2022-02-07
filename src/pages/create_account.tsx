@@ -18,7 +18,7 @@ export default function CreateAccount() {
 
   async function handleSubmit(formValues: CreateNewAccountParameters) {
     try {
-      if (!(await checkPasswordCracked(false, formValues.password))) {
+      if (!(await checkPasswordCracked(formValues.password))) {
         setIsPasswordCracked(false);
         const response = await fetch('/api/create_new_account', {
           method: 'POST',
