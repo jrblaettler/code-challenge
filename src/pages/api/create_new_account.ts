@@ -44,6 +44,7 @@ export default async function createNewAccount(
       res.status(400).json({ result: false, errors: { password: 'cracked' } });
     } else {
       res.status(200).json({ result: true });
+      console.log(newUser);
     }
   } catch (err) {
     console.log(err);
@@ -52,7 +53,7 @@ export default async function createNewAccount(
 
 const checkPasswordCracked = async (password: string) => {
   try {
-    const response = await fetch('/api/password_exposed', {
+    const response = await fetch('http:localhost:3000/api/password_exposed', {
       method: 'POST',
       body: JSON.stringify({
         password,
