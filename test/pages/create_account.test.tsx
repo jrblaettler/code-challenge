@@ -16,13 +16,12 @@ describe('CreateAccount', () => {
     render(<CreateAccount />);
 
     const body = {
-      username: '',
       password: '',
     };
     fetchMock.mockResponseOnce(JSON.stringify({}));
     userEvent.click(screen.getByText('Create Account'));
     expect(fetchMock).toBeCalledTimes(1);
-    expect(fetchMock).toBeCalledWith('/api/create_new_account', {
+    expect(fetchMock).toBeCalledWith('/api/password_exposed', {
       body: JSON.stringify(body),
       method: 'POST',
     });
@@ -31,6 +30,11 @@ describe('CreateAccount', () => {
   test('renders validation warnings', async () => {
     render(<CreateAccount />);
 
+    fetchMock.mockResponseOnce(
+      JSON.stringify({
+        result: false,
+      })
+    );
     fetchMock.mockResponseOnce(
       JSON.stringify({
         result: false,
@@ -54,8 +58,7 @@ describe('CreateAccount', () => {
 
     fetchMock.mockResponseOnce(
       JSON.stringify({
-        result: false,
-        errors: { password: 'cracked' },
+        result: true,
       })
     );
     const button = screen.getByText('Create Account');

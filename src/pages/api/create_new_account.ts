@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { checkPasswordCracked } from 'src/utils';
 
 export interface CreateNewAccountParameters {
   username: string;
@@ -20,7 +21,7 @@ export default async function createNewAccount(
     const passwordParams = new RegExp(
       '^(?=.{20,50}$)(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
     );
-    const passwordCracked = await checkPasswordCracked(newUser.password);
+    const passwordCracked = await checkPasswordCracked(true, newUser.password);
 
     if (
       !newUser.username.match(userParams) &&
@@ -49,18 +50,3 @@ export default async function createNewAccount(
     console.log(err);
   }
 }
-
-const checkPasswordCracked = async (password: string) => {
-  try {
-    const response = await fetch('http:localhost:3000/api/password_exposed', {
-      method: 'POST',
-      body: JSON.stringify({
-        password,
-      }),
-    });
-    const resBody = await response.json();
-    return resBody.result;
-  } catch (err) {
-    console.log(err);
-  }
-};

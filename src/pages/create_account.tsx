@@ -6,6 +6,7 @@ import Form from 'src/components/Form';
 import FormInput from 'src/components/FormInput';
 import logo from '../assets/logo.png';
 import { CreateNewAccountParameters } from './api/create_new_account';
+import { checkPasswordCracked } from 'src/utils';
 
 export default function CreateAccount() {
   const [isPasswordError, setIsPasswordError] = useState(false);
@@ -18,31 +19,32 @@ export default function CreateAccount() {
   ) {
     evt.preventDefault();
     try {
-      const response = await fetch('/api/create_new_account', {
-        method: 'POST',
-        body: JSON.stringify(formValues),
-      });
-      const resBody = await response.json();
-      if (resBody.errors?.username === 'fail') {
-        setIsUsernameError(true);
+      if (!(await checkPasswordCracked(false, formValues.password))) {
+        const response = await fetch('/api/create_new_account', {
+          method: 'POST',
+          body: JSON.stringify(formValues),
+        });
+        const resBody = await response.json();
+        if (resBody.errors?.username === 'fail') {
+          setIsUsernameError(true);
+        } else {
+          setIsUsernameError(false);
+        }
+        if (resBody.errors?.password === 'fail') {
+          setIsPasswordError(true);
+        } else {
+          setIsPasswordError(false);
+        }
+        if (resBody.result === true) {
+          console.log('Account Created');
+          setIsPasswordError(false);
+          setIsUsernameError(false);
+          setIsPasswordCracked(false);
+        }
       } else {
-        setIsUsernameError(false);
-      }
-      if (resBody.errors?.password === 'fail') {
-        setIsPasswordError(true);
-      } else {
-        setIsPasswordError(false);
-      }
-      if (resBody.errors?.password === 'cracked') {
         setIsPasswordCracked(true);
         setIsUsernameError(false);
         setIsPasswordError(false);
-      }
-      if (resBody.result === true) {
-        console.log('Account Created');
-        setIsPasswordError(false);
-        setIsUsernameError(false);
-        setIsPasswordCracked(false);
       }
     } catch (err) {
       console.log('Error:', err);
@@ -82,7 +84,7 @@ export default function CreateAccount() {
             </p>
           ) : null}
           {isPasswordError ? (
-            <>
+            <div>
               <p className={styles.error}>Password must:</p>
               <ul className={styles.error}>
                 <li>be between 20 and 50 characters</li>
@@ -90,7 +92,7 @@ export default function CreateAccount() {
                 <li>contain at least one uppercase or lowercase letter</li>
                 <li>contain at least one number(0-9)</li>
               </ul>
-            </>
+            </div>
           ) : null}
         </Form>
       </article>
