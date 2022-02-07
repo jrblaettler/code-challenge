@@ -20,7 +20,7 @@ const FormInput = (props: FormInputProps) => {
         type={props.type || 'text'}
         name={props.name || props.id}
         id={props.id}
-        value={form[props.name]}
+        value={form[props.id]}
         onChange={handleFormChange}
       />
     </div>

@@ -16,11 +16,7 @@ export default function CreateAccount() {
   const [isPasswordCracked, setIsPasswordCracked] = useState(false);
   const [isUsernameError, setIsUsernameError] = useState(false);
 
-  async function handleSubmit(
-    evt: FormEvent,
-    formValues: CreateNewAccountParameters
-  ) {
-    evt.preventDefault();
+  async function handleSubmit(formValues: CreateNewAccountParameters) {
     try {
       if (!(await checkPasswordCracked(false, formValues.password))) {
         setIsPasswordCracked(false);
