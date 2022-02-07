@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-interface CreateNewAccountParameters {
+export interface CreateNewAccountParameters {
   username: string;
   password: string;
 }
