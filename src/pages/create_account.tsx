@@ -20,6 +20,7 @@ export default function CreateAccount() {
     evt.preventDefault();
     try {
       if (!(await checkPasswordCracked(false, formValues.password))) {
+        setIsPasswordCracked(false);
         const response = await fetch('/api/create_new_account', {
           method: 'POST',
           body: JSON.stringify(formValues),
