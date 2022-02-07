@@ -30,7 +30,8 @@
       "<rootDir>"
     ],
     "moduleNameMapper": {
-      "^.+\\.scss$": "babel-jest"
+      "^.+\\.scss$": "babel-jest",
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "<rootDir>/__mocks__/fileMock.js"
     },
     "testEnvironment": "jsdom"
   }

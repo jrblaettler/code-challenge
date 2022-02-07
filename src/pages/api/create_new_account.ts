@@ -44,7 +44,6 @@ export default async function createNewAccount(
       res.status(400).json({ result: false, errors: { password: 'cracked' } });
     } else {
       res.status(200).json({ result: true });
-      console.log(newUser);
     }
   } catch (err) {
     console.log(err);
