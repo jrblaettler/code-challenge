@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { FormEvent, ChangeEvent, useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 import Image from 'next/image';
-// import logo from '../assets/logo.png';
+import logo from '../assets/logo.png';
 
 export default function CreateAccount() {
   const [username, setUsername] = useState('');
@@ -71,7 +71,7 @@ export default function CreateAccount() {
       </Head>
       <article className={styles.article}>
         <form className={styles.form} onSubmit={handleSubmit}>
-          {/* <Image src={logo} width={75} height={65} /> */}
+          <Image src={logo} width={75} height={65} />
           <h1 className={styles.title}>Create New Account</h1>
           <div className={styles.input_container}>
             <label className={styles.label} htmlFor='username'>
