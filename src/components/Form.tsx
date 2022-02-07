@@ -31,6 +31,7 @@ const Form = (props: FormProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     props.onSubmit(form);
+    setForm(props.initialValues);
   };
 
   return (

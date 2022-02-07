@@ -2,9 +2,6 @@ import { expect } from '@jest/globals';
 import createNewAccount from 'src/pages/api/create_new_account';
 import { mockRequest } from 'test/utils';
 import fetchMock from 'jest-fetch-mock';
-// jest.mock('node-fetch');
-// import fetch from 'node-fetch';
-// const { Response } = jest.requireActual('node-fetch');
 
 describe('/api/create_new_account', () => {
   beforeEach(() => {
