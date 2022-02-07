@@ -28,7 +28,7 @@ describe('CreateAccount', () => {
     });
   });
 
-  test('renders warning messages', async () => {
+  test('renders validation warnings', async () => {
     render(<CreateAccount />);
 
     fetchMock.mockResponseOnce(
@@ -47,5 +47,22 @@ describe('CreateAccount', () => {
     );
     expect(usernameWarning).toBeTruthy();
     expect(passwordWarning).toBeTruthy();
+  });
+
+  test('renders cracked password warning', async () => {
+    render(<CreateAccount />);
+
+    fetchMock.mockResponseOnce(
+      JSON.stringify({
+        result: false,
+        errors: { password: 'cracked' },
+      })
+    );
+    const button = screen.getByText('Create Account');
+    fireEvent.click(button);
+    const crackedWarning = await screen.findByText(
+      'This password has been hacked elsewhere, choose a different one'
+    );
+    expect(crackedWarning).toBeTruthy();
   });
 });

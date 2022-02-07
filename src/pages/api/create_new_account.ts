@@ -21,6 +21,7 @@ export default async function createNewAccount(
       '^(?=.{20,50}$)(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
     );
     const passwordCracked = await checkPasswordCracked(newUser.password);
+
     if (
       !newUser.username.match(userParams) &&
       !newUser.password.match(passwordParams)
@@ -49,7 +50,7 @@ export default async function createNewAccount(
   }
 }
 
-export const checkPasswordCracked = async (password: string) => {
+const checkPasswordCracked = async (password: string) => {
   try {
     const response = await fetch('/api/password_exposed', {
       method: 'POST',
