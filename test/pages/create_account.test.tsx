@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
 import CreateAccount from 'src/pages/create_account';
@@ -26,5 +26,26 @@ describe('CreateAccount', () => {
       body: JSON.stringify(body),
       method: 'POST',
     });
+  });
+
+  test('renders warning messages', async () => {
+    render(<CreateAccount />);
+
+    fetchMock.mockResponseOnce(
+      JSON.stringify({
+        result: false,
+        errors: { username: 'fail', password: 'fail' },
+      })
+    );
+    const button = screen.getByText('Create Account');
+    fireEvent.click(button);
+    const usernameWarning = await screen.findByText(
+      'Username must be between 10 and 50 characters'
+    );
+    const passwordWarning = await screen.findByText(
+      'Username must be between 10 and 50 characters'
+    );
+    expect(usernameWarning).toBeTruthy();
+    expect(passwordWarning).toBeTruthy();
   });
 });

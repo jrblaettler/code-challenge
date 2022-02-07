@@ -16,11 +16,11 @@ export default async function createNewAccount(
 ) {
   try {
     const newUser: CreateNewAccountParameters = JSON.parse(req.body);
-    const userParams = new RegExp('^(?=.{10,50})');
+    const userParams = new RegExp('^(?=.{10,50}$)');
     const passwordParams = new RegExp(
-      '^(?=.{20,50})(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
+      '^(?=.{20,50}$)(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
     );
-    const passwordCracked = checkPasswordCracked(newUser.password);
+    const passwordCracked = await checkPasswordCracked(newUser.password);
     if (
       !newUser.username.match(userParams) &&
       !newUser.password.match(passwordParams)
