@@ -2,8 +2,6 @@ import { useContext } from 'react';
 import { FormContext } from './Form';
 
 interface FormInputProps {
-  containerClass: string;
-  inputClass: string;
   id: string;
   label: string;
   name?: string;
@@ -13,10 +11,12 @@ interface FormInputProps {
 const FormInput = (props: FormInputProps) => {
   const { form, handleFormChange } = useContext(FormContext);
   return (
-    <div className={props.containerClass}>
-      <label htmlFor={props.id}>{props.label}</label>
+    <div className='form-input-container'>
+      <label className='form-input-label' htmlFor={props.id}>
+        {props.label}
+      </label>
       <input
-        className={props.inputClass}
+        className='form-input'
         type={props.type || 'text'}
         name={props.name || props.id}
         id={props.id}

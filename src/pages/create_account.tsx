@@ -60,8 +60,6 @@ export default function CreateAccount() {
       </Head>
       <article className={styles.article}>
         <Form
-          formClass={styles.form}
-          buttonClass={styles.button}
           buttonText='Create Account'
           initialValues={{
             username: '',
@@ -71,24 +69,13 @@ export default function CreateAccount() {
         >
           <Image src={logo} width={75} height={65} />
           <h1 className={styles.title}>Create New Account</h1>
-          <FormInput
-            containerClass={styles.input_container}
-            inputClass={styles.input}
-            label='Username'
-            id='username'
-          />
+          <FormInput label='Username' id='username' />
           {isUsernameError ? (
             <p className={styles.error}>
               Username must be between 10 and 50 characters
             </p>
           ) : null}
-          <FormInput
-            containerClass={styles.input_container}
-            inputClass={styles.input}
-            type='password'
-            id='password'
-            label='Password'
-          />
+          <FormInput type='password' id='password' label='Password' />
           {isPasswordCracked ? (
             <p className={styles.error}>
               This password has been hacked elsewhere, choose a different one

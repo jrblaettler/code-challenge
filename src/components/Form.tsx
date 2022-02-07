@@ -7,8 +7,6 @@ import {
 } from 'react';
 
 interface FormProps {
-  formClass: string;
-  buttonClass: string;
   children: ReactNode;
   onSubmit(e: FormEvent, form: any): void;
   initialValues: any;
@@ -31,11 +29,11 @@ const Form = (props: FormProps) => {
   };
 
   return (
-    <form className={props.formClass} onSubmit={e => props.onSubmit(e, form)}>
+    <form className='form' onSubmit={e => props.onSubmit(e, form)}>
       <FormContext.Provider value={{ form, handleFormChange }}>
         {props.children}
       </FormContext.Provider>
-      <button className={props.buttonClass} type='submit'>
+      <button className='form-button' type='submit'>
         {props.buttonText || 'Submit'}
       </button>
     </form>
