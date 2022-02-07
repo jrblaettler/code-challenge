@@ -5,7 +5,10 @@ import Image from 'next/image';
 import Form from 'src/components/Form';
 import FormInput from 'src/components/FormInput';
 import logo from '../assets/logo.png';
-import { CreateNewAccountParameters } from './api/create_new_account';
+import {
+  CreateNewAccountParameters,
+  BooleanResult,
+} from './api/create_new_account';
 import { checkPasswordCracked } from 'src/utils';
 
 export default function CreateAccount() {
@@ -25,7 +28,7 @@ export default function CreateAccount() {
           method: 'POST',
           body: JSON.stringify(formValues),
         });
-        const resBody = await response.json();
+        const resBody: BooleanResult = await response.json();
         if (resBody.errors?.username === 'fail') {
           setIsUsernameError(true);
         } else {

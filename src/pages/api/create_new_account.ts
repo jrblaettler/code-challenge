@@ -6,7 +6,7 @@ export interface CreateNewAccountParameters {
   password: string;
 }
 
-interface BooleanResult {
+export interface BooleanResult {
   result: boolean;
   errors?: Record<string, string>;
 }
