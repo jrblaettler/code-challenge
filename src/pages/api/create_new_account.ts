@@ -27,6 +27,7 @@ export default async function createNewAccount(
     const passwordCracked = await checkPasswordCracked(newUser.password);
     const isUsernameValid = checkUsernameValid(newUser.username);
     const isPasswordValid = checkPasswordValid(newUser.password).password;
+
     if (!isUsernameValid && !isPasswordValid) {
       res.status(400).json({
         result: false,
