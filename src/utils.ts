@@ -14,3 +14,8 @@ export const checkPasswordCracked = async (password: string) => {
     console.log(err);
   }
 };
+
+export const handleUsernameValidation = (username: string) => {
+  const userParams = new RegExp('^(?=.{10,50}$)');
+  return username.match(userParams) ? true : false;
+};

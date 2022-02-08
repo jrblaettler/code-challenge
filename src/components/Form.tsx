@@ -35,7 +35,7 @@ const Form = (props: FormProps) => {
   };
 
   return (
-    <form className='form' onSubmit={e => handleSubmit(e)}>
+    <form className='form' onSubmit={handleSubmit}>
       <FormContext.Provider value={{ form, handleFormChange }}>
         {props.children}
       </FormContext.Provider>

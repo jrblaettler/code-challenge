@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { FormEvent, ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 import Image from 'next/image';
 import Form from 'src/components/Form';
@@ -71,13 +71,24 @@ export default function CreateAccount() {
         >
           <Image src={logo} width={75} height={65} />
           <h1 className={styles.title}>Create New Account</h1>
-          <FormInput label='Username' id='username' />
+          <FormInput
+            label='Username'
+            name='username'
+            id='username'
+            onChange={e => console.log(e.target.value)}
+          />
           {isUsernameError ? (
             <p className={styles.error}>
               Username must be between 10 and 50 characters
             </p>
           ) : null}
-          <FormInput type='password' id='password' label='Password' />
+          <FormInput
+            type='password'
+            name='password'
+            id='password'
+            label='Password'
+            onChange={e => console.log(e.target.value)}
+          />
           {isPasswordCracked ? (
             <p className={styles.error}>
               This password has been hacked elsewhere, choose a different one
