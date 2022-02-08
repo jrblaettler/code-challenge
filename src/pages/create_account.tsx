@@ -11,58 +11,42 @@ import {
 } from './api/create_new_account';
 import {
   checkPasswordCracked,
-  isUsernameValid,
-  isPasswordValid,
+  checkUsernameValid,
+  checkPasswordValid,
 } from 'src/utils';
 
 export default function CreateAccount() {
-  const [isPasswordError, setIsPasswordError] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isPasswordLengthValid, setIsPasswordLengthValid] = useState(true);
   const [isPasswordCharValid, setIsPasswordCharValid] = useState(true);
   const [isPasswordNumValid, setIsPasswordNumValid] = useState(true);
   const [isPasswordSymbolValid, setIsPasswordSymbolValid] = useState(true);
   const [isPasswordCracked, setIsPasswordCracked] = useState(false);
-  const [isUsernameError, setIsUsernameError] = useState(false);
+  const [isUsernameValid, setIsUsernameValid] = useState(true);
 
   async function handleSubmit(formValues: CreateNewAccountParameters) {
     try {
-      if (!(await checkPasswordCracked(formValues.password))) {
-        setIsPasswordCracked(false);
-        const response = await fetch('/api/create_new_account', {
-          method: 'POST',
-          body: JSON.stringify(formValues),
-        });
-        const resBody: BooleanResult = await response.json();
-        if (resBody.errors?.username === 'fail') {
-          setIsUsernameError(true);
-        } else {
-          setIsUsernameError(false);
-        }
-        if (resBody.errors?.password === 'fail') {
-          setIsPasswordError(true);
-        } else {
-          setIsPasswordError(false);
-        }
-        if (resBody.result === true) {
-          console.log('Account Created');
-          setIsPasswordError(false);
-          setIsUsernameError(false);
-          setIsPasswordCracked(false);
-        }
+      const response = await fetch('/api/create_new_account', {
+        method: 'POST',
+        body: JSON.stringify(formValues),
+      });
+      const resBody: BooleanResult = await response.json();
+      if (resBody.result) {
+        console.log('Account Created Successfully');
       } else {
-        setIsPasswordCracked(true);
-        setIsUsernameError(false);
-        setIsPasswordError(false);
+        console.log(
+          'Account creation was unsuccessful, please check all required fields'
+        );
       }
     } catch (err) {
-      console.log('Error:', err);
+      console.log(
+        'An unknown error has occured while trying to create the account'
+      );
     }
   }
 
   const handleUsernameValidation = (e: ChangeEvent<HTMLInputElement>) => {
-    isUsernameValid(e.target.value)
-      ? setIsUsernameError(false)
-      : setIsUsernameError(true);
+    setIsUsernameValid(checkUsernameValid(e.target.value));
   };
 
   const handlePasswordValidation = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,12 +54,12 @@ export default function CreateAccount() {
       ? setIsPasswordCracked(true)
       : setIsPasswordCracked(false);
 
-    const isValid = isPasswordValid(e.target.value);
+    const isValid = checkPasswordValid(e.target.value);
+    setIsPasswordValid(isValid.password);
     setIsPasswordLengthValid(isValid.length);
     setIsPasswordCharValid(isValid.character);
     setIsPasswordNumValid(isValid.number);
     setIsPasswordSymbolValid(isValid.symbol);
-    console.log(isValid);
   };
 
   return (
@@ -104,11 +88,11 @@ export default function CreateAccount() {
             id='username'
             onChange={handleUsernameValidation}
           />
-          {isUsernameError ? (
+          {isUsernameValid ? null : (
             <p className={styles.error}>
               Username must be between 10 and 50 characters
             </p>
-          ) : null}
+          )}
           <FormInput
             type='password'
             name='password'
@@ -121,17 +105,25 @@ export default function CreateAccount() {
               This password has been hacked elsewhere, choose a different one
             </p>
           ) : null}
-          {isPasswordError ? (
+          {isPasswordValid ? null : (
             <div>
               <p className={styles.error}>Password must:</p>
               <ul className={styles.error}>
-                <li>be between 20 and 50 characters</li>
-                <li>contain at least one symbol (!,@,#,$,%)</li>
-                <li>contain at least one uppercase or lowercase letter</li>
-                <li>contain at least one number(0-9)</li>
+                {isPasswordLengthValid ? null : (
+                  <li>be between 20 and 50 characters</li>
+                )}
+                {isPasswordCharValid ? null : (
+                  <li>contain at least one uppercase or lowercase letter</li>
+                )}
+                {isPasswordNumValid ? null : (
+                  <li>contain at least one number(0-9)</li>
+                )}
+                {isPasswordSymbolValid ? null : (
+                  <li>contain at least one symbol (!,@,#,$,%)</li>
+                )}
               </ul>
             </div>
-          ) : null}
+          )}
         </Form>
       </article>
     </>

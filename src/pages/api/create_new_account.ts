@@ -1,5 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { checkPasswordCracked, isUsernameValid } from 'src/utils';
+import {
+  checkPasswordCracked,
+  checkUsernameValid,
+  checkPasswordValid,
+} from 'src/utils';
 
 export interface CreateNewAccountParameters {
   username: string;
@@ -21,21 +25,19 @@ export default async function createNewAccount(
       '^(?=.{20,50}$)(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
     );
     const passwordCracked = await checkPasswordCracked(newUser.password);
-
-    if (
-      !isUsernameValid(newUser.username) &&
-      !newUser.password.match(passwordParams)
-    ) {
+    const isUsernameValid = checkUsernameValid(newUser.username);
+    const isPasswordValid = checkPasswordValid(newUser.password).password;
+    if (!isUsernameValid && !isPasswordValid) {
       res.status(400).json({
         result: false,
         errors: { username: 'fail', password: 'fail' },
       });
-    } else if (!isUsernameValid(newUser.username)) {
+    } else if (!isUsernameValid) {
       res.status(400).json({
         result: false,
         errors: { username: 'fail', password: 'pass' },
       });
-    } else if (!newUser.password.match(passwordParams)) {
+    } else if (!isPasswordValid) {
       res.status(400).json({
         result: false,
         errors: { username: 'pass', password: 'fail' },
