@@ -23,6 +23,7 @@ export default function CreateAccount() {
   const [isPasswordSymbolValid, setIsPasswordSymbolValid] = useState(true);
   const [isPasswordCracked, setIsPasswordCracked] = useState(false);
   const [isUsernameValid, setIsUsernameValid] = useState(true);
+  const [renderFieldsWarning, setRenderFieldsWarning] = useState(false);
 
   async function handleSubmit(formValues: CreateNewAccountParameters) {
     try {
@@ -33,10 +34,12 @@ export default function CreateAccount() {
       const resBody: BooleanResult = await response.json();
       if (resBody.result) {
         console.log('Account Created Successfully');
+        setRenderFieldsWarning(false);
       } else {
         console.log(
           'Account creation was unsuccessful, please check all required fields'
         );
+        setRenderFieldsWarning(true);
       }
     } catch (err) {
       console.log(
@@ -82,6 +85,9 @@ export default function CreateAccount() {
         >
           <Image src={logo} width={75} height={65} />
           <h1 className={styles.title}>Create New Account</h1>
+          {renderFieldsWarning ? (
+            <p className={styles.error}>Please fill out all fields.</p>
+          ) : null}
           <FormInput
             label='Username'
             name='username'
