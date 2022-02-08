@@ -15,7 +15,16 @@ export const checkPasswordCracked = async (password: string) => {
   }
 };
 
-export const handleUsernameValidation = (username: string) => {
-  const userParams = new RegExp('^(?=.{10,50}$)');
-  return username.match(userParams) ? true : false;
+export const isUsernameValid = (username: string): boolean => {
+  const userParams = RegExp('^(?=.{10,50}$)');
+  return userParams.test(username);
+};
+
+export const isPasswordValid = (password: string) => {
+  return {
+    length: RegExp('(?=.{20,50}$)').test(password),
+    character: RegExp('(?=.*[A-Za-z])').test(password),
+    number: RegExp('(?=.*[0-9])').test(password),
+    symbol: RegExp('(?=.*[!@#$%])').test(password),
+  };
 };

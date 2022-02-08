@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 import Image from 'next/image';
 import Form from 'src/components/Form';
@@ -9,10 +9,18 @@ import {
   CreateNewAccountParameters,
   BooleanResult,
 } from './api/create_new_account';
-import { checkPasswordCracked } from 'src/utils';
+import {
+  checkPasswordCracked,
+  isUsernameValid,
+  isPasswordValid,
+} from 'src/utils';
 
 export default function CreateAccount() {
   const [isPasswordError, setIsPasswordError] = useState(false);
+  const [isPasswordLengthValid, setIsPasswordLengthValid] = useState(true);
+  const [isPasswordCharValid, setIsPasswordCharValid] = useState(true);
+  const [isPasswordNumValid, setIsPasswordNumValid] = useState(true);
+  const [isPasswordSymbolValid, setIsPasswordSymbolValid] = useState(true);
   const [isPasswordCracked, setIsPasswordCracked] = useState(false);
   const [isUsernameError, setIsUsernameError] = useState(false);
 
@@ -51,6 +59,25 @@ export default function CreateAccount() {
     }
   }
 
+  const handleUsernameValidation = (e: ChangeEvent<HTMLInputElement>) => {
+    isUsernameValid(e.target.value)
+      ? setIsUsernameError(false)
+      : setIsUsernameError(true);
+  };
+
+  const handlePasswordValidation = async (e: ChangeEvent<HTMLInputElement>) => {
+    (await checkPasswordCracked(e.target.value))
+      ? setIsPasswordCracked(true)
+      : setIsPasswordCracked(false);
+
+    const isValid = isPasswordValid(e.target.value);
+    setIsPasswordLengthValid(isValid.length);
+    setIsPasswordCharValid(isValid.character);
+    setIsPasswordNumValid(isValid.number);
+    setIsPasswordSymbolValid(isValid.symbol);
+    console.log(isValid);
+  };
+
   return (
     <>
       <Head>
@@ -75,7 +102,7 @@ export default function CreateAccount() {
             label='Username'
             name='username'
             id='username'
-            onChange={e => console.log(e.target.value)}
+            onChange={handleUsernameValidation}
           />
           {isUsernameError ? (
             <p className={styles.error}>
@@ -87,7 +114,7 @@ export default function CreateAccount() {
             name='password'
             id='password'
             label='Password'
-            onChange={e => console.log(e.target.value)}
+            onChange={handlePasswordValidation}
           />
           {isPasswordCracked ? (
             <p className={styles.error}>
