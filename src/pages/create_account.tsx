@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 import Image from 'next/image';
 import Form from 'src/components/Form';
@@ -25,6 +25,12 @@ export default function CreateAccount() {
   const [isUsernameValid, setIsUsernameValid] = useState(true);
   const [renderFieldsWarning, setRenderFieldsWarning] = useState(false);
 
+  useEffect(() => {
+    if (isPasswordValid && isUsernameValid) {
+      setRenderFieldsWarning(false);
+    }
+  }, [isPasswordValid, isUsernameValid]);
+
   async function handleSubmit(formValues: CreateNewAccountParameters) {
     try {
       const response = await fetch('/api/create_new_account', {
@@ -34,7 +40,6 @@ export default function CreateAccount() {
       const resBody: BooleanResult = await response.json();
       if (resBody.result) {
         console.log('Account Created Successfully');
-        setRenderFieldsWarning(false);
       } else {
         console.log(
           'Account creation was unsuccessful, please check all required fields'
