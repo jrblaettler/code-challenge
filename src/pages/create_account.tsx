@@ -6,7 +6,7 @@ import FormInput from 'src/components/FormInput';
 import logo from '../assets/logo.png';
 import { BooleanResult } from './api/create_new_account';
 import { checkUsernameValid, checkPasswordValid } from 'src/utils';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 export default function CreateAccount() {
   const [renderSuccessMessage, setRenderSuccessMessage] = useState(false);
