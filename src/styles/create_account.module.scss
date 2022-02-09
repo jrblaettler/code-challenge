@@ -12,8 +12,16 @@
   text-align: center;
 }
 
-.error {
-  margin: 0;
-  color: red;
-  font-size: smaller;
+.form_container {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.image_wrapper {
+  margin: 0 auto;
 }

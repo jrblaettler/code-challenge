@@ -15,19 +15,30 @@ export const checkPasswordCracked = async (password: string) => {
   }
 };
 
-export const checkUsernameValid = (username: string): boolean => {
-  const userParams = RegExp('^(?=.{10,50}$)');
-  return userParams.test(username);
+export const checkUsernameValid = (username: string) => {
+  if (!RegExp('^(?=.{10,}$)').test(username)) {
+    return 'Username length must be greater than 10 characters';
+  } else if (RegExp('^(?=.{50,}$)').test(username)) {
+    return 'Username length must be less than 50 characters';
+  } else {
+    return;
+  }
 };
 
-export const checkPasswordValid = (password: string) => {
-  return {
-    password: RegExp(
-      '^(?=.{20,50}$)(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
-    ).test(password),
-    length: RegExp('(?=.{20,50}$)').test(password),
-    character: RegExp('(?=.*[A-Za-z])').test(password),
-    number: RegExp('(?=.*[0-9])').test(password),
-    symbol: RegExp('(?=.*[!@#$%])').test(password),
-  };
+export const checkPasswordValid = async (password: string) => {
+  if (!RegExp('^(?=.{20,}$)').test(password)) {
+    return 'Password must be greater than 20 characters';
+  } else if (RegExp('^(?=.{50,}$)').test(password)) {
+    return 'Password must be less than 50 characters';
+  } else if (!RegExp('^(?=.*[A-Za-z])').test(password)) {
+    return 'Password must contain 1 letter';
+  } else if (!RegExp('^(?=.*[0-9])').test(password)) {
+    return 'Password must contain at least 1 number';
+  } else if (!RegExp('^(?=.*[!@#$%^&*])').test(password)) {
+    return 'Password must contain at least 1 symbol';
+  } else if (await checkPasswordCracked(password)) {
+    return 'This password has been hacked elsewhere, choose a different one.';
+  } else {
+    return;
+  }
 };

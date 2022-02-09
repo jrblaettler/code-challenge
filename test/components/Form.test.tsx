@@ -19,21 +19,4 @@ describe('Form', () => {
       </Form>
     );
   });
-  test('should render children', () => {
-    const textInput = screen.getByRole('textbox', { name: /test/i });
-    const emailInput = screen.getByRole('textbox', { name: /email/i });
-    expect(textInput).toBeTruthy();
-    expect(emailInput).toBeTruthy();
-  });
-
-  test('should assign formInput value by id', () => {
-    const textInput: HTMLInputElement = screen.getByRole('textbox', {
-      name: /test/i,
-    });
-    const emailInput: HTMLInputElement = screen.getByRole('textbox', {
-      name: /email/i,
-    });
-    expect(textInput.value).toEqual(initialValues.test);
-    expect(emailInput.value).toEqual(initialValues.email);
-  });
 });

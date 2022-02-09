@@ -1,9 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {
-  checkPasswordCracked,
-  checkUsernameValid,
-  checkPasswordValid,
-} from 'src/utils';
+import { checkUsernameValid, checkPasswordValid } from 'src/utils';
 
 export interface CreateNewAccountParameters {
   username: string;
@@ -21,30 +17,16 @@ export default async function createNewAccount(
 ) {
   try {
     const newUser: CreateNewAccountParameters = JSON.parse(req.body);
-    const passwordParams = new RegExp(
-      '^(?=.{20,50}$)(?=.*[A-Za-z])(?=.*[!@#$%])(?=.*[0-9])'
-    );
-    const passwordCracked = await checkPasswordCracked(newUser.password);
-    const isUsernameValid = checkUsernameValid(newUser.username);
-    const isPasswordValid = checkPasswordValid(newUser.password).password;
-
-    if (!isUsernameValid && !isPasswordValid) {
+    const usernameError = checkUsernameValid(newUser.username);
+    const passwordError = await checkPasswordValid(newUser.password);
+    if (usernameError || passwordError) {
       res.status(400).json({
         result: false,
-        errors: { username: 'fail', password: 'fail' },
+        errors: {
+          username: usernameError || 'valid',
+          password: passwordError || 'valid',
+        },
       });
-    } else if (!isUsernameValid) {
-      res.status(400).json({
-        result: false,
-        errors: { username: 'fail', password: 'pass' },
-      });
-    } else if (!isPasswordValid) {
-      res.status(400).json({
-        result: false,
-        errors: { username: 'pass', password: 'fail' },
-      });
-    } else if (passwordCracked) {
-      res.status(400).json({ result: false, errors: { password: 'cracked' } });
     } else {
       res.status(200).json({ result: true });
     }

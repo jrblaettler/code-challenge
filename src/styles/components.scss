@@ -21,8 +21,9 @@
 }
 
 .form-input-container {
-  width: 90%;
+  width: 100%;
   margin-bottom: 15px;
+  height: 60px;
 }
 
 .form-input {
@@ -36,4 +37,12 @@
 
 .form-input-label {
   font-size: smaller;
+  color: rgb(136, 136, 136);
+}
+
+.form-input-error {
+  position: relative;
+  font-size: 10px;
+  color: red;
+  margin: 0;
 }

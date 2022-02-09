@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext } from 'react';
+import { ChangeEvent, useContext, useState, FocusEvent } from 'react';
 import { FormContext } from './Form';
 
 interface FormInputProps {
@@ -6,17 +6,33 @@ interface FormInputProps {
   label: string;
   name: string;
   type?: string;
-  onChange?(e: ChangeEvent<HTMLInputElement>): void;
+  onChange?(inputValue: string): void;
+  onBlur?(inputValue: string): void;
+  validate?: Function;
 }
 
 const FormInput = (props: FormInputProps) => {
+  const {
+    onChange = () => null,
+    onBlur = () => null,
+    validate = () => null,
+  } = props;
+  const [isTouched, setIsTouched] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const { form, handleFormChange } = useContext(FormContext);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     handleFormChange(e);
-    if (props.onChange) {
-      props.onChange(e);
+    onChange(e.target.value);
+    if (isTouched) {
+      setErrorMessage(await validate(e.target.value));
     }
+  };
+
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
+    onBlur(e.target.value);
+    setIsTouched(true);
+    setErrorMessage(await validate(e.target.value));
   };
 
   return (
@@ -31,7 +47,9 @@ const FormInput = (props: FormInputProps) => {
         id={props.id}
         value={form[props.id]}
         onChange={handleChange}
+        onBlur={handleBlur}
       />
+      {isTouched ? <p className='form-input-error'>{errorMessage}</p> : null}
     </div>
   );
 };

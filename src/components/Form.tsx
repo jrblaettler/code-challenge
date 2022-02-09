@@ -6,10 +6,12 @@ import {
   useState,
 } from 'react';
 
+export type FormValues = Record<string, string>;
+
 interface FormProps {
   children: ReactNode;
-  onSubmit(form: any): void;
-  initialValues: any;
+  onSubmit(form: FormValues): void;
+  initialValues: FormValues;
   buttonText?: string;
 }
 
@@ -31,11 +33,10 @@ const Form = (props: FormProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     props.onSubmit(form);
-    setForm(props.initialValues);
   };
 
   return (
-    <form className='form' onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <FormContext.Provider value={{ form, handleFormChange }}>
         {props.children}
       </FormContext.Provider>

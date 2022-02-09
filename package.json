@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "test": "jest"
+    "test": "jest",
+    "testwatch": "jest --watch"
   },
   "dependencies": {
     "next": "^12.0.10",

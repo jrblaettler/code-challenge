@@ -28,26 +28,13 @@ describe('CreateAccount', () => {
     });
   });
 
-  test('renders username validation warnings', async () => {
+  test('validates username', () => {
     render(<CreateAccount />);
-
-    const input = screen.getByRole('textbox', {
-      name: /username/i,
-    });
-    fireEvent.change(input, { target: { value: 'short' } });
-    const usernameWarning = screen.getByText(
-      'Username must be between 10 and 50 characters'
-    );
-    expect(usernameWarning).toBeTruthy();
+    userEvent.type(screen.getByLabelText('Username'), 'test');
+    expect(
+      screen.queryByText('Username must be between 10 and 50 characters')
+    ).toBeNull();
+    userEvent.click(document.body);
+    screen.getByText('Username must be between 10 and 50 characters');
   });
-
-  // test('renders cracked password warning', async () => {
-  //   render(<CreateAccount />);
-
-  //   const input = screen.getByLabelText('');
-  //   const crackedWarning = await screen.findByText(
-  //     'This password has been hacked elsewhere, choose a different one'
-  //   );
-  //   expect(crackedWarning).toBeTruthy();
-  // });
 });
