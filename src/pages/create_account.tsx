@@ -6,8 +6,10 @@ import FormInput from 'src/components/FormInput';
 import logo from '../assets/logo.png';
 import { BooleanResult } from './api/create_new_account';
 import { checkUsernameValid, checkPasswordValid } from 'src/utils';
+import { useContext, useState } from 'react';
 
 export default function CreateAccount() {
+  const [renderSuccessMessage, setRenderSuccessMessage] = useState(false);
   async function handleSubmit(formValues: FormValues) {
     try {
       const response = await fetch('/api/create_new_account', {
@@ -15,9 +17,9 @@ export default function CreateAccount() {
         body: JSON.stringify(formValues),
       });
       const resBody: BooleanResult = await response.json();
-      console.log(resBody);
       if (resBody.result) {
         console.log('Account Created Successfully');
+        setRenderSuccessMessage(true);
       } else {
         console.log(
           'Account creation was unsuccessful, please check all required fields'
@@ -46,7 +48,9 @@ export default function CreateAccount() {
           </div>
           <h1 className={styles.title}>Create New Account</h1>
           <Form
-            buttonText='Create Account'
+            buttonText={
+              renderSuccessMessage ? 'Account Created!' : 'Create Account'
+            }
             initialValues={{
               username: '',
               password: '',
