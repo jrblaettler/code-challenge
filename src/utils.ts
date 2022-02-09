@@ -17,9 +17,9 @@ export const checkPasswordCracked = async (password: string) => {
 
 export const checkUsernameValid = (username: string) => {
   if (!RegExp('^(?=.{10,}$)').test(username)) {
-    return 'Username length must be greater than 10 characters';
+    return 'Username must be greater than 10 characters';
   } else if (RegExp('^(?=.{50,}$)').test(username)) {
-    return 'Username length must be less than 50 characters';
+    return 'Username must be less than 50 characters';
   } else {
     return;
   }

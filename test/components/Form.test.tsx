@@ -1,22 +1,21 @@
 import Form from 'src/components/Form';
 import FormInput from 'src/components/FormInput';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 describe('Form', () => {
-  const testSubmit = (formValues: any) => {
-    return formValues;
-  };
-  const initialValues = {
-    test: 'test',
-    email: 'test@test.test',
-  };
-
-  beforeEach(() => {
+  test('Form works', () => {
+    const onSubmit = jest.fn();
     render(
-      <Form initialValues={initialValues} onSubmit={testSubmit}>
-        <FormInput id='test' name='test' label='test' />
-        <FormInput id='email' name='email' label='email' type='email' />
+      <Form initialValues={{ test: '' }} onSubmit={onSubmit}>
+        <FormInput label='Test' name='test' id='test' />
       </Form>
     );
+
+    const input = screen.getByLabelText('Test');
+    userEvent.type(input, 'test');
+    userEvent.click(screen.getByText('Submit'));
+    expect(onSubmit).toBeCalledTimes(1);
+    expect(onSubmit).toBeCalledWith({ test: 'test' });
   });
 });

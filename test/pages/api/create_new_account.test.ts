@@ -43,7 +43,10 @@ describe('/api/create_new_account', () => {
     expect(res._getStatusCode()).toBe(400);
     expect(res._getJSONData()).toEqual({
       result: false,
-      errors: { username: 'fail', password: 'pass' },
+      errors: {
+        password: 'valid',
+        username: 'Username must be greater than 10 characters',
+      },
     });
   });
 
@@ -62,7 +65,10 @@ describe('/api/create_new_account', () => {
     expect(res._getStatusCode()).toBe(400);
     expect(res._getJSONData()).toEqual({
       result: false,
-      errors: { username: 'fail', password: 'pass' },
+      errors: {
+        password: 'valid',
+        username: 'Username must be less than 50 characters',
+      },
     });
   });
 
@@ -81,7 +87,10 @@ describe('/api/create_new_account', () => {
     expect(res._getStatusCode()).toBe(400);
     expect(res._getJSONData()).toEqual({
       result: false,
-      errors: { username: 'pass', password: 'fail' },
+      errors: {
+        password: 'Password must be less than 50 characters',
+        username: 'valid',
+      },
     });
   });
 
@@ -99,7 +108,10 @@ describe('/api/create_new_account', () => {
     expect(res._getStatusCode()).toBe(400);
     expect(res._getJSONData()).toEqual({
       result: false,
-      errors: { username: 'pass', password: 'fail' },
+      errors: {
+        password: 'Password must contain at least 1 number',
+        username: 'valid',
+      },
     });
   });
 
@@ -117,7 +129,10 @@ describe('/api/create_new_account', () => {
     expect(res._getStatusCode()).toBe(400);
     expect(res._getJSONData()).toEqual({
       result: false,
-      errors: { username: 'pass', password: 'fail' },
+      errors: {
+        password: 'Password must contain at least 1 symbol',
+        username: 'valid',
+      },
     });
   });
 
@@ -135,7 +150,11 @@ describe('/api/create_new_account', () => {
     expect(res._getStatusCode()).toBe(400);
     expect(res._getJSONData()).toEqual({
       result: false,
-      errors: { password: 'cracked' },
+      errors: {
+        username: 'valid',
+        password:
+          'This password has been hacked elsewhere, choose a different one.',
+      },
     });
   });
 });

@@ -28,13 +28,19 @@ describe('CreateAccount', () => {
     });
   });
 
-  test('validates username', () => {
+  test('validates username', async () => {
     render(<CreateAccount />);
-    userEvent.type(screen.getByLabelText('Username'), 'test');
+    const usernameInput = screen.getByLabelText('Username');
+    userEvent.type(usernameInput, 'test');
     expect(
-      screen.queryByText('Username must be between 10 and 50 characters')
+      screen.queryByText('Username must be greater than 10 characters')
     ).toBeNull();
     userEvent.click(document.body);
-    screen.getByText('Username must be between 10 and 50 characters');
+    await screen.findByText('Username must be greater than 10 characters');
+    userEvent.type(
+      usernameInput,
+      'testingupperlimittestingupperlimittestingupperlimit'
+    );
+    await screen.findByText('Username must be less than 50 characters');
   });
 });
