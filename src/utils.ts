@@ -27,9 +27,9 @@ export const checkUsernameValid = (username: string) => {
 
 export const checkPasswordValid = async (password: string) => {
   if (!RegExp('^(?=.{20,}$)').test(password)) {
-    return 'Password must be greater than 20 characters';
+    return 'Password must be at least 20 characters';
   } else if (RegExp('^(?=.{50,}$)').test(password)) {
-    return 'Password must be less than 50 characters';
+    return 'Password must be at most 50 characters';
   } else if (!RegExp('^(?=.*[A-Za-z])').test(password)) {
     return 'Password must contain 1 letter';
   } else if (!RegExp('^(?=.*[0-9])').test(password)) {

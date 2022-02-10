@@ -88,7 +88,7 @@ describe('/api/create_new_account', () => {
     expect(res._getJSONData()).toEqual({
       result: false,
       errors: {
-        password: 'Password must be less than 50 characters',
+        password: 'Password must be at most 50 characters',
         username: 'valid',
       },
     });

@@ -12,13 +12,13 @@ describe('Password Validation', () => {
 
   test('password validation works', async () => {
     expect(await checkPasswordValid('tooshort')).toEqual(
-      'Password must be greater than 20 characters'
+      'Password must be at least 20 characters'
     );
     expect(
       await checkPasswordValid(
         'toolongtoolongtoolongtoolongtoolongtoolongtoolongtoolong'
       )
-    ).toEqual('Password must be less than 50 characters');
+    ).toEqual('Password must be at most 50 characters');
     expect(await checkPasswordValid('12345678901234567890')).toEqual(
       'Password must contain 1 letter'
     );
