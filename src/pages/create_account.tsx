@@ -25,7 +25,7 @@ export default function CreateAccount() {
           'Invalid username and/or password. Please try again.'
         );
       }
-    } catch (err) {
+    } catch {
       setSubmitErrorMessage('Uknown error has occurred. Please try again.');
     }
   }
