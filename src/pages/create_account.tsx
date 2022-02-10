@@ -10,7 +10,6 @@ import { useState } from 'react';
 
 export default function CreateAccount() {
   const [renderSuccessMessage, setRenderSuccessMessage] = useState(false);
-  const [renderErrorMessage, setRenderErrorMessage] = useState(false);
   const [submitErrorMessage, setSubmitErrorMessage] = useState('');
   async function handleSubmit(formValues: FormValues) {
     try {
@@ -20,20 +19,14 @@ export default function CreateAccount() {
       });
       const resBody: BooleanResult = await response.json();
       if (resBody.result) {
-        console.log('Account Created Successfully');
         setRenderSuccessMessage(true);
       } else {
-        console.log(
-          'Account creation was unsuccessful, please check all required fields'
-        );
         setSubmitErrorMessage(
           'Invalid username and/or password. Please try again.'
         );
       }
     } catch (err) {
-      console.log(
-        'An unknown error has occured while trying to create the account'
-      );
+      throw err;
     }
   }
 

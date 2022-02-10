@@ -11,7 +11,7 @@ export const checkPasswordCracked = async (password: string) => {
     const resBody: BooleanResult = await response.json();
     return resBody.result;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
