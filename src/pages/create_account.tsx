@@ -20,6 +20,7 @@ export default function CreateAccount() {
       const resBody: BooleanResult = await response.json();
       if (resBody.result) {
         setRenderSuccessMessage(true);
+        setSubmitErrorMessage('');
       } else {
         setSubmitErrorMessage(
           'Invalid username and/or password. Please try again.'
