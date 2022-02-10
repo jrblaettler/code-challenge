@@ -7,7 +7,11 @@ describe('Form', () => {
   test('Form works', () => {
     const onSubmit = jest.fn();
     render(
-      <Form initialValues={{ test: '' }} onSubmit={onSubmit}>
+      <Form
+        initialValues={{ test: '' }}
+        onSubmit={onSubmit}
+        submitErrorMessage={'test error message'}
+      >
         <FormInput label='Test' name='test' id='test' />
       </Form>
     );
@@ -17,5 +21,6 @@ describe('Form', () => {
     userEvent.click(screen.getByText('Submit'));
     expect(onSubmit).toBeCalledTimes(1);
     expect(onSubmit).toBeCalledWith({ test: 'test' });
+    screen.getByText('test error message');
   });
 });

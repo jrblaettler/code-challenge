@@ -11,6 +11,7 @@ import { useState } from 'react';
 export default function CreateAccount() {
   const [renderSuccessMessage, setRenderSuccessMessage] = useState(false);
   const [renderErrorMessage, setRenderErrorMessage] = useState(false);
+  const [submitErrorMessage, setSubmitErrorMessage] = useState('');
   async function handleSubmit(formValues: FormValues) {
     try {
       const response = await fetch('/api/create_new_account', {
@@ -25,7 +26,9 @@ export default function CreateAccount() {
         console.log(
           'Account creation was unsuccessful, please check all required fields'
         );
-        setRenderErrorMessage(true);
+        setSubmitErrorMessage(
+          'Invalid username and/or password. Please try again.'
+        );
       }
     } catch (err) {
       console.log(
@@ -58,6 +61,7 @@ export default function CreateAccount() {
               password: '',
             }}
             onSubmit={handleSubmit}
+            submitErrorMessage={submitErrorMessage}
           >
             <FormInput
               label='Username'
@@ -72,11 +76,6 @@ export default function CreateAccount() {
               label='Password'
               validate={checkPasswordValid}
             />
-            {renderErrorMessage ? (
-              <p className={styles.error}>
-                Invalid username and/or password. Please try again.
-              </p>
-            ) : null}
           </Form>
         </div>
       </article>

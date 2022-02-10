@@ -12,6 +12,7 @@ interface FormProps {
   children: ReactNode;
   onSubmit(form: FormValues): void;
   initialValues: FormValues;
+  submitErrorMessage: string;
   buttonText?: string;
 }
 
@@ -40,9 +41,12 @@ const Form = (props: FormProps) => {
       <FormContext.Provider value={{ form, handleFormChange }}>
         {props.children}
       </FormContext.Provider>
-      <button className='form-button' type='submit'>
-        {props.buttonText || 'Submit'}
-      </button>
+      <div className='form-button-container'>
+        <p className='form-submit-error'>{props.submitErrorMessage}</p>
+        <button className='form-button' type='submit'>
+          {props.buttonText || 'Submit'}
+        </button>
+      </div>
     </form>
   );
 };
