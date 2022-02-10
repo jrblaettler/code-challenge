@@ -26,7 +26,7 @@ export default function CreateAccount() {
         );
       }
     } catch (err) {
-      throw err;
+      setSubmitErrorMessage('Uknown error has occurred. Please try again.');
     }
   }
 
