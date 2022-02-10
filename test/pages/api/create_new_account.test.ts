@@ -28,6 +28,7 @@ describe('/api/create_new_account', () => {
       result: true,
     });
   });
+
   test('returns true', async () => {
     const { req, res } = mockRequest({
       method: 'POST',

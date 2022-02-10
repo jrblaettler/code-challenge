@@ -46,25 +46,14 @@ describe('CreateAccount', () => {
 
   test('Fails to create on improper inputs', async () => {
     render(<CreateAccount />);
-    userEvent.type(screen.getByLabelText('Username'), 'tooshort');
-
     fetchMock.mockResponseOnce(JSON.stringify({ result: false }));
-    userEvent.type(screen.getByLabelText('Password'), 'tooshort');
-
-    fetchMock.mockResponseOnce(
-      JSON.stringify({
-        result: false,
-        errors: {
-          username: 'Username must be at least 10 characters',
-          password: 'Password must be at least 20 characters',
-        },
-      })
-    );
     userEvent.click(screen.getByText('Create Account'));
 
-    expect(fetchMock).toBeCalledTimes(2);
+    expect(fetchMock).toBeCalledTimes(1);
 
-    const successMessage = await screen.findByText('Account Created!');
-    expect(successMessage).toBeFalsy();
+    const successMessage = await screen.findByText(
+      'Invalid username and/or password. Please try again.'
+    );
+    expect(successMessage).toBeTruthy();
   });
 });
