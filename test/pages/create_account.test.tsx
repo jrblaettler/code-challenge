@@ -28,19 +28,43 @@ describe('CreateAccount', () => {
     });
   });
 
-  test('validates username', async () => {
+  test('Creates accounts', async () => {
     render(<CreateAccount />);
-    const usernameInput = screen.getByLabelText('Username');
-    userEvent.type(usernameInput, 'test');
-    expect(
-      screen.queryByText('Username must be greater than 10 characters')
-    ).toBeNull();
-    userEvent.click(document.body);
-    await screen.findByText('Username must be greater than 10 characters');
-    userEvent.type(
-      usernameInput,
-      'testingupperlimittestingupperlimittestingupperlimit'
+    userEvent.type(screen.getByLabelText('Username'), 'iAmAValidUsername');
+
+    fetchMock.mockResponseOnce(JSON.stringify({ result: false }));
+    userEvent.type(screen.getByLabelText('Password'), '!2IAmAValidPassword2!');
+
+    fetchMock.mockResponseOnce(JSON.stringify({ result: true }));
+    userEvent.click(screen.getByText('Create Account'));
+
+    expect(fetchMock).toBeCalledTimes(2);
+
+    const successMessage = await screen.findByText('Account Created!');
+    expect(successMessage).toBeTruthy();
+  });
+
+  test('Fails to create on improper inputs', async () => {
+    render(<CreateAccount />);
+    userEvent.type(screen.getByLabelText('Username'), 'tooshort');
+
+    fetchMock.mockResponseOnce(JSON.stringify({ result: false }));
+    userEvent.type(screen.getByLabelText('Password'), 'tooshort');
+
+    fetchMock.mockResponseOnce(
+      JSON.stringify({
+        result: false,
+        errors: {
+          username: 'Username must be at least 10 characters',
+          password: 'Password must be at least 20 characters',
+        },
+      })
     );
-    await screen.findByText('Username must be less than 50 characters');
+    userEvent.click(screen.getByText('Create Account'));
+
+    expect(fetchMock).toBeCalledTimes(2);
+
+    const successMessage = await screen.findByText('Account Created!');
+    expect(successMessage).toBeFalsy();
   });
 });

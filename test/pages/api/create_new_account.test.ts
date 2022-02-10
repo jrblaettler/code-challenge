@@ -45,7 +45,7 @@ describe('/api/create_new_account', () => {
       result: false,
       errors: {
         password: 'valid',
-        username: 'Username must be greater than 10 characters',
+        username: 'Username must be at least 10 characters',
       },
     });
   });
@@ -67,7 +67,7 @@ describe('/api/create_new_account', () => {
       result: false,
       errors: {
         password: 'valid',
-        username: 'Username must be less than 50 characters',
+        username: 'Username must be at most 50 characters',
       },
     });
   });

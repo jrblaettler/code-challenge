@@ -43,13 +43,13 @@ describe('Password Validation', () => {
 describe('Username Validation', () => {
   test('Username Validation Works', () => {
     expect(checkUsernameValid('tooshort')).toEqual(
-      'Username must be greater than 10 characters'
+      'Username must be at least 10 characters'
     );
     expect(
       checkUsernameValid(
         'toolongtoolongtoolongtoolongtoolongtoolongtoolongtoolong'
       )
-    ).toEqual('Username must be less than 50 characters');
+    ).toEqual('Username must be at most 50 characters');
     expect(checkUsernameValid('iAmAValidUsername')).toEqual(undefined);
   });
 });
